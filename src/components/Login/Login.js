@@ -1,9 +1,47 @@
-import {React,useState} from 'react';
+import {React,useState,useEffect} from 'react';
+import { useForm } from "react-hook-form";
+import { useNavigate } from 'react-router-dom';
 import "./login.css";
 
 export default function Login(){
+    const navigate = useNavigate();
     const[show_register,setRegister] = useState(false)
-
+    const[employees,setEmployee] = useState([])
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const onSubmit = (data,e) => {
+        if(show_register){
+            let check_data = null
+            check_data = employees.find(x => {
+                return x.employee_id === data.employee_id
+            })
+            if(check_data == null){
+                employees.push(data)
+                localStorage.setItem("store_employee",JSON.stringify(employees))
+                setEmployee(JSON.parse(localStorage.getItem("store_employee")))
+                setRegister(false)
+            }
+            else{
+                alert("Employee Already Exists")
+            }
+            
+        }
+        else{
+            let show_data = null
+            if(employees){
+                show_data = employees.filter(x => {
+                    return x.employee_id === register.employee_id
+                })
+            }
+            if(!show_data){
+                alert("Employee ID does not Exists")
+            }
+            else{
+                localStorage.setItem("logged_in_user",JSON.stringify(data))
+                navigate('/home')
+            }
+        }
+        e.target.reset();
+    }
     let registerEmployee = () => {
         if(!show_register){
             setRegister(true)
@@ -13,24 +51,37 @@ export default function Login(){
         }
     }
 
+    useEffect(() => {
+        let data = []
+        data = JSON.parse(localStorage.getItem("store_employee"))
+        if(data.length == 0){
+            setEmployee([])
+        }
+        else{
+            setEmployee(data)
+        }
+    },[])
+
     return( 
         <div className={show_register === true ? 'h-350 d-block login' : 'd-block login'}>
             <h5>{show_register === true ? 'Sign Up' : 'Sign In'}</h5>
             <hr />
-            <form className="mt-7px">
-                <div className="form-group">
+            <form className="mt-7px" onSubmit={handleSubmit(onSubmit)}>
+                <div className="form-group mb-0">
                     <label className="text-left d-block">Employee ID</label>
-                    <input className="form-control" placeholder="Enter Employee ID"></input>
+                    <input className="form-control" {...register("employee_id",{required: true})} placeholder="Enter Employee ID"></input>
                 </div>
+                {errors.employee_id && <div className="text-danger text-left fw-500">Employee ID is Required</div>}
                 {
                     show_register === true ?
-                        <div className="form-group">
+                        <div className="form-group mb-0 mt-16px">
                             <label className="text-left d-block">Employee Name</label>
-                            <input className="form-control" placeholder="Enter Employee Name"></input>
+                            <input {...register("employee_name", {required: true})} className="form-control" placeholder="Enter Employee Name"></input>
                         </div>
                     : null    
                 }
-                <button className="btn btn-success btn-smm">
+                {errors.employee_name && <div className="text-danger text-left fw-500">Employee Name is Required</div>}
+                <button type="submit" className="btn btn-success btn-smm mt-12px">
                     SUBMIT
                 </button>
                 <a href="javascript:;" className="fw-600 text-primary pointer d-block mt-7px" onClick={registerEmployee}>{ show_register ? 'Please Click here to Login' : 'Please Click here to Register'}</a>

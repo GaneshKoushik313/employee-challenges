@@ -6,12 +6,12 @@
     margin: 0 auto;
     position: relative;
     top: 135px;
-    height: 260px;
+    height: 277px;
     padding: 2rem;
     transition: 0.5s ease all;
 }
 .h-350{
-    height: 350px !important;
+    height: 380px !important;
 }
 .login .form-group{
     transition: 0.5s ease all;
