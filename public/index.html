@@ -8,13 +8,14 @@
     <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link type="text/css" href="./main.css" rel="stylesheet">
-    <link type="text/css" href="http://bootstrap-material.fusetheme.com/assets/icons/fuse-icon-font/style.css"
-        rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="http://bootstrap-material.fusetheme.com/assets/fuse-html/fuse-html.min.css">
+    <link type="text/css" href="http://bootstrap-material.fusetheme.com/assets/icons/fuse-icon-font/style.css" rel="stylesheet">
+    <link type="text/css" href="http://bootstrap-material.fusetheme.com/assets/css/main.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <title>Employee Challenges</title>
+    <title>HACK IDEAS</title>
     <style>
         .invalid-feedback {
             color: #dc3545;
@@ -27,6 +28,22 @@
         body {
             font-size: 14px;
             height: 100%;
+        }
+        body{
+            height: 100%;
+            max-height: 100%;
+        }
+        html{
+            height: 100%;
+            max-height: 100%;
+        }
+        .App{
+            height: 100%;
+            max-height: 100%;
+        }
+        #root{
+            height: 100%;
+            max-height: 100%;
         }
 
         .text-material-color {
@@ -309,7 +326,7 @@
         }
 
         .modal-title {
-            background-color: #3c3c3c;
+            background-color: #2270c1;
             opacity: 0.9;
             color: #fff;
             border-top-left-radius: 6px;
@@ -336,7 +353,6 @@
             text-align: center;
             height: 10%;
             color: #fff;
-            background: #cdd2da;
             border-bottom-left-radius: 6px;
             border-bottom-right-radius: 6px;
         }
@@ -346,13 +362,20 @@
         }
 
         .react-responsive-modal-modal {
-            width: 440px;
-            height: 552px;
+            width: 600px;
+            height: 457px;
             max-height: 552px;
+            overflow: auto;
             border-radius: 6px;
             background-color: #fff !important;
             padding: 0px !important;
             margin: 0 auto !important;
+            border: solid 1px #9fa2a7;
+            position: absolute;
+            top: 70px;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
 
         .react-responsive-modal-closeButton {
@@ -448,12 +471,17 @@
             transition: opacity 200ms;
         }
 
-        .react-responsive-modal-overlay {
-            opacity: 0.9;
-        }
-
         .fs-25 {
             font-size: 25px;
+        }
+
+        .form-control{
+            height: 36px;
+            font-size: 14px;
+        }
+
+        input::placeholder{
+            font-size: 14px;
         }
     </style>
 </head>
