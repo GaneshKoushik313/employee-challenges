@@ -5,32 +5,37 @@ import { Modal } from 'react-responsive-modal';
 export default function CreateChallenges(props){
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
     const onSubmit = (data,e) => {
-        data['_id'] = uuidv4();
-        data['voter_id'] = null
-        data['count_info'] = {
-            _id: data._id,
-            count: 0
-        }
-        data['const_count'] = {
-            _id: data._id,
-            count: 0
-        }
-        data['selected_employees'] = []
-        data['created_date'] = new Date()
-        let store_data = []
-        let check_data = []
-        check_data = JSON.parse(localStorage.getItem("challenges"))
-        if(check_data){
-            store_data = check_data
-            store_data.push(data)
+        if(register.descripiton){
+            data['_id'] = uuidv4();
+            data['voter_id'] = null
+            data['count_info'] = {
+                _id: data._id,
+                count: 0
+            }
+            data['const_count'] = {
+                _id: data._id,
+                count: 0
+            }
+            data['selected_employees'] = []
+            data['created_date'] = new Date()
+            let store_data = []
+            let check_data = []
+            check_data = JSON.parse(localStorage.getItem("challenges"))
+            if(check_data){
+                store_data = check_data
+                store_data.push(data)
+            }
+            else{
+                store_data.push(data)
+            }
+            let counts = store_data.map(x => {return x.count_info})
+            localStorage.setItem("votes",JSON.stringify(counts))
+            localStorage.setItem("challenges",JSON.stringify(store_data))
+            props.saveChallenge()
         }
         else{
-            store_data.push(data)
+            alert("Please Enter Description")
         }
-        let counts = store_data.map(x => {return x.count_info})
-        localStorage.setItem("votes",JSON.stringify(counts))
-        localStorage.setItem("challenges",JSON.stringify(store_data))
-        props.saveChallenge()
     }
     return(
         <div>

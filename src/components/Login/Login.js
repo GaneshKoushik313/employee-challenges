@@ -32,10 +32,11 @@ export default function Login(){
             let show_data = null
             if(employees && employees.length){
                 show_data = employees.filter(x => {
-                    return x.employee_id === register.employee_id
+                    return x.employee_id === data.employee_id
                 })
             }
-            if(!show_data){
+            console.log(show_data)
+            if(show_data && show_data.length == 0){
                 alert("Employee ID does not Exists")
             }
             else{
