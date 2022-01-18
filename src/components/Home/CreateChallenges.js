@@ -7,10 +7,19 @@ export default function CreateChallenges(props){
     const onSubmit = (data,e) => {
         data['_id'] = uuidv4();
         data['voter_id'] = null
+        data['count_info'] = {
+            _id: data._id,
+            count: 0
+        }
+        data['const_count'] = {
+            _id: data._id,
+            count: 0
+        }
+        data['selected_employees'] = []
         data['created_date'] = new Date()
         let store_data = []
         let check_data = []
-        check_data = JSON.parse(localStorage.getItem("store_challenges"))
+        check_data = JSON.parse(localStorage.getItem("challenges"))
         if(check_data){
             store_data = check_data
             store_data.push(data)
@@ -18,7 +27,9 @@ export default function CreateChallenges(props){
         else{
             store_data.push(data)
         }
-        localStorage.setItem("store_challenges",JSON.stringify(store_data))
+        let counts = store_data.map(x => {return x.count_info})
+        localStorage.setItem("votes",JSON.stringify(counts))
+        localStorage.setItem("challenges",JSON.stringify(store_data))
         props.saveChallenge()
     }
     return(

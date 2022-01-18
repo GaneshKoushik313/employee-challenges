@@ -1,8 +1,10 @@
 import {React,useState,useEffect} from 'react';
 import './home.css';
 import CreateChallenges from "./CreateChallenges.js";
+import { useNavigate } from 'react-router-dom';
 
 export default function Home(){
+    const navigate = useNavigate();
     const [logged_in_user,setLoggedInUser] = useState({
         employee_id: '',
         employee_name: '',
@@ -10,18 +12,38 @@ export default function Home(){
     })
     const [open,setOpen] = useState(false)
     const [loading,setLoading] = useState(false)
-    const [challenges,setChallenges] = useState([])
+    let [challenges,setChallenges] = useState([])
 
-    let voterChallenge = (index) => {
-        // if(!loading){
-        //     console.log(index)
-        //     if(challenges[index].voter_id){
-        //         challenges[index].voter_id = null
-        //     }
-        //     else if(challenges[index].voter_id == null){
-        //         challenges[index].voter_id = logged_in_user.login_id
-        //     }
-        // }
+    let voterChallenge = (list) => {
+        if(list.voter_id != logged_in_user.login_id){
+            list.count_info.count = list.const_count.count + 1
+            list.voter_id = logged_in_user.login_id
+            list.selected_employees.push(list.voter_id)
+            setChallenges(challenges.map((challenge) => challenge._id === list._id ? {
+                ...challenge,
+                voter_id: logged_in_user.login_id
+            } : challenge));
+        }
+        else{
+            let filter_employees = list.selected_employees.filter(x => {
+                if(!list.selected_employees.includes(list.voter_id)){
+                    return x
+                }
+            })
+            list.count_info.count = list.const_count.count - 1
+            list.voter_id = null
+            list.selected_employees = filter_employees
+            setChallenges(challenges.map((challenge) => challenge._id === list._id ? {
+                ...challenge,
+                voter_id: null,
+                selected_employees: filter_employees
+            } : challenge));
+        }
+        let store_data = []
+        store_data = challenges
+        localStorage.setItem("challenges",JSON.stringify(store_data))
+        let counts = challenges.map(x => {return x.count_info})
+        localStorage.setItem("votes",JSON.stringify(counts))
     }
 
     let addChallenge = () => {
@@ -29,7 +51,7 @@ export default function Home(){
     }
 
     let saveChallenge = (value) => {
-        setChallenges(JSON.parse(localStorage.getItem("store_challenges")))
+        setChallenges(JSON.parse(localStorage.getItem("challenges")))
         setOpen(false)
     }
 
@@ -50,14 +72,41 @@ export default function Home(){
     
         return [day, month, year].join('-');
     }
-     
-    useEffect(() => {
+
+    let logOut = () => {
+        sessionStorage.removeItem("logged_in_user")
+        navigate("/")
+    }  
+
+    let loadData = () => {
         setLoading(true)
         setLoggedInUser(JSON.parse(sessionStorage.getItem("logged_in_user")))
-        setChallenges(JSON.parse(localStorage.getItem("store_challenges")))
+        setChallenges(JSON.parse(localStorage.getItem("challenges")))
+        let set_count = JSON.parse(localStorage.getItem("challenges"))
+        if(set_count){
+            set_count.forEach(x => {
+                x.const_count = x.count_info
+                x.selected_employees.forEach(y => {
+                    if(x.selected_employees.includes(x.voter_id)){
+                        x.voter_id = y
+                    }
+                    else{
+                        x.voter_id = null
+                    }
+                })
+            })
+            setChallenges(set_count)
+        }
+        challenges = challenges.sort(function (a, b) {
+            return a.created_date.localeCompare(b.created_date);
+        });
         setTimeout(() => {
             setLoading(false)
         }, 1000);
+    }
+    
+    useEffect(() => {
+        loadData()
     },[])
     
     return(
@@ -73,7 +122,7 @@ export default function Home(){
                             <div>{logged_in_user.employee_id}</div>
                             <div>{logged_in_user.employee_name}</div>
                         </div>
-                        <div className="logout">
+                        <div className="logout" onClick={logOut}>
                             <i className="fa fa-sign-out text-white fs-16"></i>
                             Logout
                         </div>
@@ -86,23 +135,31 @@ export default function Home(){
                             </div> : null
                         } 
                         <div className="mt-18 w-100">
-                            { challenges && challenges.map((list,index) => (
-                                <div key={index} className="list-challenges p-3 mt-3">
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <div className="fw-600">{list.title}</div>
-                                        <div>
-                                            <span className="pointer" onClick={voterChallenge(index)}>
-                                                {
-                                                    challenges[index].voter_id ? <i className="fs-14 fa">&#xf087;</i> : <i className="fa fa-thumbs-up fs-14"></i>
-                                                }
-                                            </span>
-                                            <span className="text-primary">24 Votes</span>
-                                            <span className="ml-4">{formatDate(list.created_date)}</span>
-                                        </div>
-                                    </div>
-                                    <div className="mt-2 text-justify w-100">{list.description}</div>
-                                </div>   
-                            ))}    
+                            { challenges && challenges.length ? 
+                                <div>
+                                    { challenges && challenges.map((list,index) => (
+                                        <div key={index} className="list-challenges p-3 mt-3">
+                                            <div className="d-flex justify-content-between align-items-center">
+                                                <div className="fw-600">{list.title}</div>
+                                                <div>
+                                                    <span className="pointer" onClick={() => voterChallenge(list)}>
+                                                        {
+                                                            list.voter_id !== logged_in_user.login_id ? <i className="fs-14 fa">&#xf087;</i> : <i className="fa fa-thumbs-up fs-14"></i>
+                                                        }
+                                                    </span>
+                                                    <span className="text-primary">{list.count_info.count} Votes</span>
+                                                    <span className="ml-4">{formatDate(list.created_date)}</span>
+                                                </div>
+                                            </div>
+                                            <div className="mt-2 text-justify w-100">{list.description}</div>
+                                        </div>   
+                                    ))}
+                                </div>
+                                :
+                                <div className="list-challenges p-3 mt-3 font-weight-bold fs-16">
+                                    No Data
+                                </div>    
+                            }    
                         </div>
                     </div>
                 </div> 
