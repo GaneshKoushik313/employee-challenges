@@ -1,6 +1,6 @@
 #Getting Started
 
-Steps to be followed to nun the Project
+Steps to be followed to run the Project
 
 1. Clone the repository
 
@@ -9,6 +9,3 @@ Steps to be followed to nun the Project
 3. npm start
 
 4. Branch: master
-
-
-Demo:
