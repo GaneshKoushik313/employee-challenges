@@ -15,18 +15,29 @@ export default function Home(){
     let [challenges,setChallenges] = useState([])
 
     let voterChallenge = (list) => {
-        if(list.voter_id != logged_in_user.login_id){
+        if(list.voter_id == null && list.voter_id != logged_in_user.login_id){
             list.count_info.count = list.const_count.count + 1
             list.voter_id = logged_in_user.login_id
             list.selected_employees.push(list.voter_id)
+            console.log(list.selected_employees)
             setChallenges(challenges.map((challenge) => challenge._id === list._id ? {
                 ...challenge,
                 voter_id: logged_in_user.login_id
             } : challenge));
         }
-        else{
+        else if(list.voter_id && list.voter_id != logged_in_user.login_id){
+            list.count_info.count = list.const_count.count + 1
+            list.voter_id = logged_in_user.login_id
+            list.selected_employees.push(list.voter_id)
+            console.log(list.selected_employees)
+            setChallenges(challenges.map((challenge) => challenge._id === list._id ? {
+                ...challenge,
+                voter_id: logged_in_user.login_id
+            } : challenge));
+        }
+        else if(list.voter_id && list.voter_id == logged_in_user.login_id){
             let filter_employees = list.selected_employees.filter(x => {
-                if(!list.selected_employees.includes(list.voter_id)){
+                if(x !== list.voter_id){
                     return x
                 }
             })
@@ -86,14 +97,13 @@ export default function Home(){
         if(set_count){
             set_count.forEach(x => {
                 x.const_count = x.count_info
-                x.selected_employees.forEach(y => {
-                    if(x.selected_employees.includes(x.voter_id)){
-                        x.voter_id = y
-                    }
-                    else{
-                        x.voter_id = null
+                let selected_id = x.selected_employees.filter(z => {
+                    if(z === logged_in_user.login_id){
+                        return z
                     }
                 })
+                console.log('test',selected_id)
+                x.voter_id = selected_id[0]
             })
             setChallenges(set_count)
         }
