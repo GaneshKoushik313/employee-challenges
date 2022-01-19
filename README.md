@@ -9,3 +9,5 @@ Steps to be followed to run the Project
 3. npm start
 
 4. Branch: master
+
+5. node version: 14.16.0
