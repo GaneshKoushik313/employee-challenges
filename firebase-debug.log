@@ -1,0 +1,17 @@
+[debug] [2022-02-19T16:48:41.756Z] ----------------------------------------------------------------------
+[debug] [2022-02-19T16:48:41.759Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\USMGN\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2022-02-19T16:48:41.759Z] CLI Version:   10.2.0
+[debug] [2022-02-19T16:48:41.759Z] Platform:      win32
+[debug] [2022-02-19T16:48:41.759Z] Node Version:  v16.13.2
+[debug] [2022-02-19T16:48:41.761Z] Time:          Sat Feb 19 2022 22:18:41 GMT+0530 (India Standard Time)
+[debug] [2022-02-19T16:48:41.761Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-02-19T16:48:41.806Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-02-19T16:48:41.806Z] > authorizing via signed-in user (ganeshkoushik23@gmail.com)
+[debug] [2022-02-19T16:48:41.806Z] [iam] checking project hack-ideas-815c0 for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-02-19T16:48:41.808Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack-ideas-815c0:testIamPermissions [none]
+[debug] [2022-02-19T16:48:41.808Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack-ideas-815c0:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-02-19T16:48:43.362Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack-ideas-815c0:testIamPermissions 200
+[debug] [2022-02-19T16:48:43.362Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/hack-ideas-815c0:testIamPermissions {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-02-19T16:48:43.362Z] >>> [apiv2][query] POST https://iam.googleapis.com/v1/projects/hack-ideas-815c0/serviceAccounts/hack-ideas-815c0@appspot.gserviceaccount.com:testIamPermissions [none]
+[debug] [2022-02-19T16:48:43.363Z] >>> [apiv2][body] POST https://iam.googleapis.com/v1/projects/hack-ideas-815c0/serviceAccounts/hack-ideas-815c0@appspot.gserviceaccount.com:testIamPermissions {"permissions":["iam.serviceAccounts.actAs"]}
